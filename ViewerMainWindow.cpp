@@ -4,9 +4,9 @@
 #include <QGLFormat>
 #include "ViewerMainWindow.h"
 
-ViewerMainWindow::ViewerMainWindow()
-{
+ViewerMainWindow::ViewerMainWindow(){
     float Window_H = 500, Window_W = 500;
+    
 #if 0
     QGLFormat fmt;
     fmt.setProfile(QGLFormat::CoreProfile);
@@ -25,39 +25,31 @@ ViewerMainWindow::ViewerMainWindow()
     mainLayout->addLayout(controlsLayout);
 
 
-
     //________RGB SLIDERS______________
      QLabel *RLabel = new QLabel("X");
      QLabel *GLabel = new QLabel("Y");
      QLabel *BLabel = new QLabel("Z");
 
-    //Material sliders
+    //Lighting Sliders
     QGroupBox *lightingGroupBox = new QGroupBox("Light Position");
-//    QGroupBox *lightingGroupBox = new QGroupBox("Material Diffuse");
 
-    //        QlightingGroupBox *lightingGroupBox = new QlightingGroupBox(Label);
         controlsLayout->addWidget(lightingGroupBox, 0);
         controlsLayout->addStretch(2);
         QHBoxLayout *lightingGroupBoxLayout = new QHBoxLayout;
         lightingGroupBox->setLayout(lightingGroupBoxLayout);
 
-//            QLabel *RLabel = new QLabel("X");
         lightingGroupBoxLayout->addWidget(RLabel);
         lRSlider = new QSlider(Qt::Horizontal);
         lRSlider->setMaximum(20);
         lRSlider->setMinimum(-20);
         lightingGroupBoxLayout->addWidget(lRSlider, 1);
-    //        QObject::connect(lRSlider, SIGNAL(sliderMoved(int)), this, SLOT(Changed()));
 
-//            QLabel *GLabel = new QLabel("Y");
         lightingGroupBoxLayout->addWidget(GLabel);
         lGSlider = new QSlider(Qt::Horizontal);
         lGSlider->setMaximum(20);
         lGSlider->setMinimum(-20);
         lightingGroupBoxLayout->addWidget(lGSlider, 1);
-    //        QObject::connect(lGSlider, SIGNAL(sliderMoved(int)), this, SLOT(Changed()));
 
-//            QLabel *BLabel = new QLabel("Z");
         lightingGroupBoxLayout->addWidget(BLabel);
         lBSlider = new QSlider(Qt::Horizontal);
         lBSlider->setMaximum(20);
@@ -70,7 +62,7 @@ ViewerMainWindow::ViewerMainWindow()
         QObject::connect(lBSlider, SIGNAL(sliderMoved(int)), this, SLOT(lightingChanged()));
 
 
-    //Material sliders
+    //Ambient Slider
     QGroupBox *MaGroupBox = new QGroupBox("Material Ambient");
 
         controlsLayout->addWidget(MaGroupBox, 0);
@@ -93,7 +85,6 @@ ViewerMainWindow::ViewerMainWindow()
         aGSlider->setMinimum(0);
         MaGroupBoxLayout->addWidget(aGSlider, 1);
 
-
         QLabel *aBLabel = new QLabel("BLUE");
         MaGroupBoxLayout->addWidget(aBLabel);
         aBSlider = new QSlider(Qt::Horizontal);
@@ -106,8 +97,7 @@ ViewerMainWindow::ViewerMainWindow()
         QObject::connect(aGSlider, SIGNAL(sliderMoved(int)), this, SLOT(alightingChanged()));
         QObject::connect(aBSlider, SIGNAL(sliderMoved(int)), this, SLOT(alightingChanged()));
 
-
-
+    //Diffuse Slider
     QGroupBox *MdGroupBox = new QGroupBox("Material Diffuse");
 
         controlsLayout->addWidget(MdGroupBox, 0);
@@ -121,7 +111,6 @@ ViewerMainWindow::ViewerMainWindow()
         dRSlider->setMaximum(10);
         dRSlider->setMinimum(0);
         MdGroupBoxLayout->addWidget(dRSlider, 1);
-
 
         QLabel *dGLabel = new QLabel("GREEN");
         MdGroupBoxLayout->addWidget(dGLabel);
@@ -142,6 +131,7 @@ ViewerMainWindow::ViewerMainWindow()
         QObject::connect(dGSlider, SIGNAL(sliderMoved(int)), this, SLOT(dlightingChanged()));
         QObject::connect(dBSlider, SIGNAL(sliderMoved(int)), this, SLOT(dlightingChanged()));
 
+    //Specular Slider
     QGroupBox *MsGroupBox = new QGroupBox("Material Specular");
 
         controlsLayout->addWidget(MsGroupBox, 0);
@@ -156,14 +146,12 @@ ViewerMainWindow::ViewerMainWindow()
         sRSlider->setMinimum(0);
         MsGroupBoxLayout->addWidget(sRSlider, 1);
 
-
         QLabel *sGLabel = new QLabel("GREEN");
         MsGroupBoxLayout->addWidget(sGLabel);
         sGSlider = new QSlider(Qt::Horizontal);
         sGSlider->setMaximum(10);
         sGSlider->setMinimum(0);
         MsGroupBoxLayout->addWidget(sGSlider, 1);
-    //        QObject::connect(sGSlider, SIGNAL(sliderMoved(int)), this, SLOT(Changed()));
 
         QLabel *sBLabel = new QLabel("BLUE");
         MsGroupBoxLayout->addWidget(sBLabel);
@@ -179,7 +167,6 @@ ViewerMainWindow::ViewerMainWindow()
 
 
     //---------__CAMERA__-----
-
     QGroupBox *cameraGroupBox = new QGroupBox("Camera");
     controlsLayout->addWidget(cameraGroupBox, 0);
     controlsLayout->addStretch(1);
@@ -204,26 +191,21 @@ ViewerMainWindow::ViewerMainWindow()
     cameraGroupBoxLayout->addWidget(mPhicameraLineEdit, 1);
     QObject::connect(mPhicameraLineEdit, SIGNAL(returnPressed()), this, SLOT(cameraChanged()));
 
-
-
     button = new QPushButton("&Reset", this);
     controlsLayout->addWidget(button, 0);
     QObject::connect(button, SIGNAL(released()), this, SLOT(reset()));
 
 }
 
-void ViewerMainWindow::lightingModelChanged(int s)
-{
+void ViewerMainWindow::lightingModelChanged(int s){
     mGLDisplay->setUsePhongShader(s);
 }
 
-void ViewerMainWindow::shineChanged()
-{
+void ViewerMainWindow::shineChanged(){
     mGLDisplay->setShine( mZTranslateLineEdit->text().toDouble());
 }
 
-void ViewerMainWindow::translateChanged()
-{
+void ViewerMainWindow::translateChanged(){
     mGLDisplay->setTranslate(mXTranslateLineEdit->text().toDouble(), mYTranslateLineEdit->text().toDouble(),  mZTranslateLineEdit->text().toDouble());
 }
 
@@ -267,11 +249,9 @@ void ViewerMainWindow::keyPressEvent(QKeyEvent* event)
     if(event->key() == Qt::Key_W){
        mGLDisplay->w_pressed();
     }
-
     else if(event->key() == Qt::Key_S){
        mGLDisplay->s_pressed();
     }
-
     else if(event->key() == Qt::Key_A){
        mGLDisplay->a_pressed();
     }
@@ -284,9 +264,6 @@ void ViewerMainWindow::keyPressEvent(QKeyEvent* event)
     else if(event->key() == Qt::Key_V){
        mGLDisplay->v_pressed();
     }
-
-
-
 
 }
 
