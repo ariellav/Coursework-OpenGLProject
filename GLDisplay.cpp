@@ -75,8 +75,7 @@ GLDisplay::GLDisplay(QWidget *parent)
 }
 
 
-void GLDisplay::initializeGL()
-{
+void GLDisplay::initializeGL(){
     glSetup();
 
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -139,9 +138,8 @@ void GLDisplay::resizeGL(int w, int h)
     // float mAspect = GLfloat(w) / GLfloat(h);
 }
 
-void GLDisplay::paintGL()
-{
-
+void GLDisplay::paintGL(){
+  
     float mAspect = this->width()/this->height();
     // Clear Screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -193,7 +191,7 @@ void scale_normals(float x, float y, float z, std::vector<glm::vec3> &normals){
 void GLDisplay::setUp_GL(glm::mat4 mVM, glm::mat4 pM, glm::mat4 mV,glm::mat4 MM,
                          GLfloat matA[3],GLfloat matD[3],GLfloat matS[3],
                          GLuint BufferID[3], Mesh mesh, GLuint pID){
-
+                           
     glUniformMatrix4fv(
             glGetUniformLocation(pID, "modelViewMatrix"),
             1, false, glm::value_ptr(mVM));
@@ -247,15 +245,14 @@ void GLDisplay::setTranslate(double tx, double ty, double tz)
     // Trigger redraw in OpenGL
     updateGL();
 }
-
+/*
 void GLDisplay::setPerspective(float N,float F,float FY){
 
 
 }
-
+*/
 
 void GLDisplay::setRotate(float X,float Y,float Z){
-
     R_X = X;
     R_Y = Y;
     R_Z = Z;
@@ -263,7 +260,6 @@ void GLDisplay::setRotate(float X,float Y,float Z){
 }
 
 void GLDisplay::setCamera(float D,float T,float P){
-
     C_X = D * sin(T)*cos(P);
     C_Y = D * sin(P);
     C_Z = D * cos(T) * cos(P) ;
@@ -271,7 +267,6 @@ void GLDisplay::setCamera(float D,float T,float P){
 }
 
 void GLDisplay::setLightPosition(float X,float Y,float Z){
-
     LX = X;
     LY = Y;
     LZ = Z;
@@ -279,7 +274,6 @@ void GLDisplay::setLightPosition(float X,float Y,float Z){
 }
 
 void GLDisplay::setAmbientColor(GLfloat R, GLfloat G, GLfloat B){
-
     mKAR = R/10;
     mKAG = G/10;
     mKAB = B/10;
@@ -287,7 +281,6 @@ void GLDisplay::setAmbientColor(GLfloat R, GLfloat G, GLfloat B){
 }
 
 void GLDisplay::setDiffuseColor(GLfloat R, GLfloat G, GLfloat B){
-
     mKDR  = R/10;
     mKDG  = G/10;
     mKDB  = B/10;
@@ -295,7 +288,6 @@ void GLDisplay::setDiffuseColor(GLfloat R, GLfloat G, GLfloat B){
 }
 
 void GLDisplay::setSpecularColor(GLfloat R, GLfloat G, GLfloat B){
-
     mKSR = R/10;
     mKSG = G/10;
     mKSB = B/10;
@@ -307,8 +299,7 @@ void GLDisplay::setShine(GLfloat Shine){
     updateGL();
 }
 
-glm::vec3 get_Z(float x, float y, QPoint center)
-{
+glm::vec3 get_Z(float x, float y, QPoint center){
     glm::vec3 Point;
 
     float p_x = (x - center.x())/250;
@@ -317,9 +308,7 @@ glm::vec3 get_Z(float x, float y, QPoint center)
     float d, a;
 
         d = sqrt(p_x*p_x + p_y*p_y);
-
         float p_z = cos((M_PI/2.0) * ((d < 1.0) ? d : 1.0));
-
         a = 1.0 / sqrt(p_x*p_x + p_y*p_y + p_z*p_z);
 
         p_x *= a;
@@ -331,7 +320,6 @@ glm::vec3 get_Z(float x, float y, QPoint center)
 }
 
 QQuaternion GLDisplay::get_Quat(glm::vec3 u, glm::vec3 v){
-
     QQuaternion q;
 
     glm::vec3 w = cross(u, v);
@@ -342,12 +330,8 @@ QQuaternion GLDisplay::get_Quat(glm::vec3 u, glm::vec3 v){
 void GLDisplay::rotate_LR(QPoint pre, QPoint Cur){
     float dif = (Cur.x()-pre.x());
 //    std::cout<<Cur.x()<<" "<<pre.x()<<std::endl;
-    if(dif>0){
-        R_A=1;
-    }
-    else{
-        R_A=-1;
-    }
+    if(dif>0){ R_A=1;}
+    else{ R_A=-1;}
 //    std::cout<<R_A<<std::endl;
     new_look(R_A);
 }
@@ -355,12 +339,8 @@ void GLDisplay::rotate_LR(QPoint pre, QPoint Cur){
 void GLDisplay::tilt_LR(QPoint pre, QPoint Cur){
     float dif = (Cur.x()-pre.x());
 //    std::cout<<Cur.x()<<" "<<pre.x()<<std::endl;
-    if(dif>0){
-        R_T=1;
-    }
-    else{
-        R_T=-1;
-    }
+    if(dif>0){ R_T=1;}
+    else{ R_T=-1;}
 //    std::cout<<R_A<<std::endl;
     new_tilt(R_T);
 }
@@ -369,11 +349,8 @@ void GLDisplay::tilt_LR(QPoint pre, QPoint Cur){
 void GLDisplay::new_tilt(GLfloat R_T)
 {
     float theta = R_T*0.0174532925;
-
     float cs = cos(theta);
     float sn = sin(theta);
-
-
 
     double PX = tilt.x * cs - tilt.y * sn;
     double PY = tilt.x * sn + tilt.y * cs;
@@ -381,18 +358,13 @@ void GLDisplay::new_tilt(GLfloat R_T)
 //    std::cout<<PX<<" "<<PZ<<std::endl;
 
     tilt = glm::vec3(PX,PY,0);
-
 }
 
 
-void GLDisplay::new_look(GLfloat R_A)
-{
+void GLDisplay::new_look(GLfloat R_A){
     float theta = R_A*0.0174532925;
-
     float cs = cos(theta);
     float sn = sin(theta);
-
-
 
     double PX = lookObject.x * cs - lookObject.z * sn;
     double PZ = lookObject.x * sn + lookObject.z * cs;
@@ -400,38 +372,28 @@ void GLDisplay::new_look(GLfloat R_A)
 //    std::cout<<PX<<" "<<PZ<<std::endl;
 
     lookObject = glm::vec3(PX,0,PZ);
-
 }
 
 
-void GLDisplay::mousePressEvent(QMouseEvent *event)
-{
+void GLDisplay::mousePressEvent(QMouseEvent *event){
     //if (event->button()==Qt::LeftButton){
         lastPos = event->pos();
     //}
-
-
 }
 
 
-void GLDisplay::mouseMoveEvent(QMouseEvent *event)
-{
+void GLDisplay::mouseMoveEvent(QMouseEvent *event){
 
     if (event->buttons() & Qt::LeftButton) {
-
         rotate_LR(lastPos,event->pos());
-
         lastPos = event->pos();
     }
 
     if(event->buttons() & Qt::RightButton){
        tilt_LR(lastPos,event->pos());
-
        lastPos = event->pos();
-
     }
-
-
+    
     QGLWidget::mouseMoveEvent(event);
 
     updateGL();
@@ -488,7 +450,6 @@ void GLDisplay::w_pressed(){
 //    std::cout<<dx<<" "<<dz<<std::endl;
 
     if(fabs(dx)>fabs(dz)){
-
         if(negx&&!negz){
             dz = -(dz/dx);
             dx = -1;
@@ -498,7 +459,6 @@ void GLDisplay::w_pressed(){
             dx = 1;
         }
     }
-
     else{
         if(negz&&!negx){
             dx = -(dx/dz);
@@ -515,8 +475,7 @@ void GLDisplay::w_pressed(){
 
     C_X = C_X + dx;
     C_Z = C_Z + dz;
-
-
+    
 //    std::cout<<dx<<" "<<dz<<std::endl<<std::endl;
 }
 
@@ -526,7 +485,6 @@ void GLDisplay::s_pressed(){
 
     bool negx = (dx < 0.0f);
     bool negz = (dz < 0.0f);
-
 
 //    std::cout<<dx<<" "<<dz<<std::endl;
 
