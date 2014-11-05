@@ -42,8 +42,6 @@ class ViewerMainWindow : public QMainWindow
         QSlider *lGSlider;
         QSlider *lBSlider;
 
-
-
         QLineEdit *mDcameraLineEdit;
         QLineEdit *mThetacameraLineEdit;
         QLineEdit *mPhicameraLineEdit;
@@ -63,6 +61,5 @@ class ViewerMainWindow : public QMainWindow
         void slightingChanged();
         void shineChanged();
         void reset();
-
 };
 
